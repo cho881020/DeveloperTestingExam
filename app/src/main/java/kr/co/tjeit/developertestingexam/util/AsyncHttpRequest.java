@@ -64,46 +64,6 @@ public class AsyncHttpRequest {
     }
 
 
-    //Checking Internet Connection
-
-//	public static void postImageFiles(final Context context, final String url , final int chiefIndex , final Map<String, String> params, final ArrayList<Bitmap> bitmapList, final HttpResponseHandler handler) {
-//		AsyncTaskHandler async = new AsyncTaskHandler() {
-//			@Override
-//			public String doInBackground() {
-//
-//				HttpRequest request = HttpRequest.post(url);
-//				for (Map.Entry<?, ?> entry : params.entrySet())
-//				{
-//					request.part(entry.getKey().toString(), entry.getValue().toString());
-//				}
-//
-//				for (int i=0;i<bitmapList.size();i++)
-//				{
-//					Bitmap myBitmap = bitmapList.get(i);
-//					ByteArrayOutputStream bao = new ByteArrayOutputStream();
-//					myBitmap.compress(Bitmap.CompressFormat.JPEG, 70, bao);
-//					byte [] ba = bao.toByteArray();
-//					ByteArrayInputStream bs = new ByteArrayInputStream(ba);
-//					SimpleDateFormat sdfNow = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
-//					String dateTime = sdfNow.format(new Date(System.currentTimeMillis()));
-//
-//					String fileName = "cm_product_"+ContextUtil.getUserPhoneMum(context)+"_"+dateTime+".jpg";
-//					if (i == chiefIndex) {
-//						request.part("chiefImageName", fileName);
-//					}
-//					request.part("contentPhoto"+i, fileName,"image/jpg", bs);
-//				}
-//
-//
-//
-//
-//				return request.body();
-//			}
-//		};
-//
-//		new AsyncHttpRequestTask(context, async, true, handler).execute();
-//	}
-
 	public static void postWithImageFile(final Context context,
 										 final String url ,
 										 final Map<String, String> params,
@@ -123,18 +83,15 @@ public class AsyncHttpRequest {
 
 				if (bitmap != null)
 				{
-//					Bitmap => 웹에 전송 가능한 byte[] 형태로 변환
 					Bitmap myBitmap = bitmap;
 					ByteArrayOutputStream bao = new ByteArrayOutputStream();
 					myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bao);
 					byte [] ba = bao.toByteArray();
 					ByteArrayInputStream bs = new ByteArrayInputStream(ba);
 
-//					2. 파일 명 지정. my_profile20170907_130511321.jpg
 					SimpleDateFormat sdfNow = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
 					String dateTime = sdfNow.format(new Date(System.currentTimeMillis()));
 
-//					 profile, post
 					String fileName = fileType+"_"+dateTime+".jpg";
 
 					request.part("image", fileName,"image/jpg", bs);
@@ -218,9 +175,7 @@ public class AsyncHttpRequest {
 				if (mContext != null && showProgress) {
 
 					mProgress = new ProgressDialog(mContext);
-//					mProgress .getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-//					mProgress.setTitle(  );
 					mProgress.setMessage("잠시만 기다려주세요..");
 					mProgress.show();
 

@@ -6,6 +6,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import kr.co.tjeit.developertestingexam.util.ServerUtil;
+
 public class LoginActivity extends BaseActivity {
 
     private android.widget.EditText idEdt;
@@ -26,7 +31,19 @@ public class LoginActivity extends BaseActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+
+                ServerUtil.sign_in(mContext, idEdt.getText().toString(), pwEdt.getText().toString(), new ServerUtil.JsonResponseHandler() {
+                    @Override
+                    public void onResponse(JSONObject json) {
+                        try {
+                            if (json.getBoolean("result")){
+                                Toast.makeText(mContext, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         });
     }

@@ -25,13 +25,11 @@ public class ServerUtil {
 
     public static void sign_in(final Context context, final String id, final String pw, final JsonResponseHandler handler) {
         String url = BASE_URL+"mobile/sign_in";
-        //		String registrationId = ContextUtil.getRegistrationId(context);
 
         Map<String, String> data = new HashMap<String, String>();
-        data.put("user_id", id); // 사용자가 입력하는 아이디. (cho881020)
+        data.put("user_id", id);
         data.put("password", pw);
         data.put("os", "Android");
-//        data.put("device_token", 기기고유값);
 
         AsyncHttpRequest.post(context, url,  data, false, new AsyncHttpRequest.HttpResponseHandler() {
 

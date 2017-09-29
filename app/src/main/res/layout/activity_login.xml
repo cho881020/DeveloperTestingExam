@@ -30,7 +30,7 @@
         android:id="@+id/pwEdt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="USER PASSWORD"/>
+        android:hint="USER PASSWORD"/>
 
     <TextView
         android:layout_width="wrap_content"
