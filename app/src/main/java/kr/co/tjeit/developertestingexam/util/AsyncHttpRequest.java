@@ -60,6 +60,7 @@ public class AsyncHttpRequest {
 
 	static boolean isNetworkAvailable(final Context context) {
 		return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
+//		여기서 앱죽음
 	}
 
 
