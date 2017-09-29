@@ -44,9 +44,7 @@ public class LoginActivity extends BaseActivity {
 
                                         User loginUser = User.getUserFromJson(json.getJSONObject("user"));
 
-
-
-                                        Toast.makeText(mContext, "로그인한사람 :" + loginUser.getName(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, "로그인한사람 : " + loginUser.getName(), Toast.LENGTH_SHORT).show();
 
                                     } else {
                                         Toast.makeText(mContext, "로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show();
@@ -54,8 +52,6 @@ public class LoginActivity extends BaseActivity {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-
-
                             }
                         });
             }
