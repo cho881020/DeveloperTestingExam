@@ -28,7 +28,12 @@ public class MainActivity extends BaseActivity {
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show();
+                if (idEdt.getText().toString().equals("")&&pwEdt.getText().toString().equals("")) {
+                    Toast.makeText(mContext, "아이디와 페스워드를 입력하세요.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(mContext, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
