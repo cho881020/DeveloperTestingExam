@@ -11,6 +11,8 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import kr.co.tjeit.developertestingexam.data.User;
+import kr.co.tjeit.developertestingexam.util.ContextUtil;
 import kr.co.tjeit.developertestingexam.util.ServerUtil;
 
 public class MainActivity extends BaseActivity {
@@ -24,6 +26,9 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bindViews();
+        setupEvents();
+        setValues();
     }
 
     @Override
@@ -31,6 +36,15 @@ public class MainActivity extends BaseActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (idEdt.getText().toString().equals("")) {
+                    Toast.makeText(mContext, "아이디를 입력하세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (pwEdt.getText().toString().equals("")) {
+                    Toast.makeText(mContext, "비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 ServerUtil.sign_in(mContext, idEdt.getText().toString(), pwEdt.getText().toString(),
                         new ServerUtil.JsonResponseHandler() {
                             @Override
@@ -41,7 +55,12 @@ public class MainActivity extends BaseActivity {
 
                                 try {
                                     if (json.getBoolean("result")) {
-                                        Toast.makeText(mContext, json.getString("message"), Toast.LENGTH_SHORT).show();
+                                        JSONObject user = json.getJSONObject("user");
+                                        Toast.makeText(mContext, user.getString("name") + "님이 로그인 했습니다.", Toast.LENGTH_SHORT).show();
+                                        ContextUtil.login(mContext, new User(user.getInt("id"), user.getString("user_id"),
+                                                user.getString("name"), user.getString("birth_day"), user.getString("phone_num"), user.getInt("gender"), user.getString("profile_photo")));
+                                    } else {
+                                        Toast.makeText(mContext, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show();
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
