@@ -1,6 +1,5 @@
 package kr.co.tjeit.developertestingexam.util;
 
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,24 +8,18 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.widget.Toast;
-
-import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-
-import kr.kjstudio.share_tdd.R;
 
 
 public class AsyncHttpRequest {
 
 	public interface HttpResponseHandler {
-		boolean onPrepare();		
+		boolean onPrepare();
 		void onResponse(String response);
 		void onFinish();
 		void onCancelled();
@@ -37,40 +30,40 @@ public class AsyncHttpRequest {
 	public static void post(final Context context, final String url , final Map<String, String> params, final boolean showProgress, final HttpResponseHandler handler) {
 
 
-        if (isNetworkAvailable(context)) {
-            AsyncTaskHandler async = new AsyncTaskHandler() {
-                @Override
-                public String doInBackground() {
+		if (isNetworkAvailable(context)) {
+			AsyncTaskHandler async = new AsyncTaskHandler() {
+				@Override
+				public String doInBackground() {
 
-                    if (params == null)
-                        return HttpRequest.post(url).body();
-                    else
-                        return HttpRequest.post(url).form(params).body();
-                }
-            };
+					if (params == null)
+						return HttpRequest.post(url).body();
+					else
+						return HttpRequest.post(url).form(params).body();
+				}
+			};
 
-            new AsyncHttpRequestTask(context, async, showProgress, handler).execute();
-        } else {
-            AlertDialog.Builder alert = new AlertDialog.Builder(context);
-            alert.setTitle(R.string.connection_error);
-            alert.setMessage(R.string.connection_error_request);
-            alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    System.exit(0);
-                }
-            });
-            alert.show();
-        }
+			new AsyncHttpRequestTask(context, async, showProgress, handler).execute();
+		} else {
+			AlertDialog.Builder alert = new AlertDialog.Builder(context);
+			alert.setTitle("인터넷 연결 실패");
+			alert.setMessage("인터넷에 연결 할 수 없습니다. 와이파이 / 데이터를 확인해주세요.");
+			alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					System.exit(0);
+				}
+			});
+			alert.show();
+		}
 
 	}
 
-    static boolean isNetworkAvailable(final Context context) {
-        return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
-    }
+	static boolean isNetworkAvailable(final Context context) {
+		return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
+	}
 
 
-    //Checking Internet Connection
+	//Checking Internet Connection
 
 //	public static void postImageFiles(final Context context, final String url , final int chiefIndex , final Map<String, String> params, final ArrayList<Bitmap> bitmapList, final HttpResponseHandler handler) {
 //		AsyncTaskHandler async = new AsyncTaskHandler() {
@@ -110,7 +103,12 @@ public class AsyncHttpRequest {
 //		new AsyncHttpRequestTask(context, async, true, handler).execute();
 //	}
 
-	public static void postWithImageFile(final Context context, final String url , final Map<String, String> params, final Bitmap bitmap, final String fileType, final HttpResponseHandler handler) {
+	public static void postWithImageFile(final Context context,
+										 final String url ,
+										 final Map<String, String> params,
+										 final Bitmap bitmap,
+										 final String fileType,
+										 final HttpResponseHandler handler) {
 		AsyncTaskHandler async = new AsyncTaskHandler() {
 			@Override
 			public String doInBackground() {
@@ -124,14 +122,18 @@ public class AsyncHttpRequest {
 
 				if (bitmap != null)
 				{
+//					Bitmap => 웹에 전송 가능한 byte[] 형태로 변환
 					Bitmap myBitmap = bitmap;
 					ByteArrayOutputStream bao = new ByteArrayOutputStream();
 					myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bao);
 					byte [] ba = bao.toByteArray();
 					ByteArrayInputStream bs = new ByteArrayInputStream(ba);
+
+//					2. 파일 명 지정. my_profile20170907_130511321.jpg
 					SimpleDateFormat sdfNow = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
 					String dateTime = sdfNow.format(new Date(System.currentTimeMillis()));
 
+//					 profile, post
 					String fileName = fileType+"_"+dateTime+".jpg";
 
 					request.part("image", fileName,"image/jpg", bs);
@@ -261,7 +263,7 @@ public class AsyncHttpRequest {
 			if (mResponseHandler != null)
 				mResponseHandler.onCancelled();
 			if (mProgress != null)
-				mProgress.dismiss();			
+				mProgress.dismiss();
 		}
 	}
 
