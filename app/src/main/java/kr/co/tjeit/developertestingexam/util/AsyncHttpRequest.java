@@ -140,10 +140,6 @@ public class AsyncHttpRequest {
 					request.part("image", fileName,"image/jpg", bs);
 				}
 
-
-
-
-
 				return request.trustAllCerts().body();
 			}
 		};
