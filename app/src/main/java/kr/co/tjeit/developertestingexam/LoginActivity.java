@@ -44,6 +44,8 @@ public class LoginActivity extends BaseActivity {
 
                                         User loginUser = User.getUserFromJson(json.getJSONObject("user"));
 
+
+
                                         Toast.makeText(mContext, "로그인한사람 :" + loginUser.getName(), Toast.LENGTH_SHORT).show();
 
                                     } else {
