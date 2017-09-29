@@ -34,7 +34,7 @@ public class LoginActivity extends BaseActivity {
                     Toast.makeText(mContext, "아이디를 입력해주세요", Toast.LENGTH_SHORT).show();
                 }
                 boolean check_pw = !pwEdt.getText().toString().equals("");
-                if (!check_id){
+                if (!check_pw){
                     Toast.makeText(mContext, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show();
                 }
             }
