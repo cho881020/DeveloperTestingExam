@@ -1,5 +1,8 @@
 package kr.co.tjeit.developertestingexam.data;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -10,6 +13,22 @@ public class User implements Serializable {
     private int id;
     private String userId;
     private String userName;
+
+
+    public static User getUserFromJsonObject(JSONObject json) {
+        User tempUser = new User();
+        try {
+            tempUser.setId(json.getInt("id"));
+            tempUser.setUserId(json.getString("user_id"));
+            tempUser.setUserName(json.getString("name"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return tempUser;
+
+    }
 
     public User() {
     }

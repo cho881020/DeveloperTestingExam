@@ -1,8 +1,18 @@
 package kr.co.tjeit.developertestingexam;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Locale;
+
+import kr.co.tjeit.developertestingexam.data.User;
+import kr.co.tjeit.developertestingexam.util.ServerUtil;
 
 public class MainActivity extends BaseActivity {
 
@@ -19,9 +29,45 @@ public class MainActivity extends BaseActivity {
         setValues();
     }
 
+    public static User getUserFromJsonObject(JSONObject json) {
+//        매번 파싱하기 매우 귀찮다.
+        final User tempUser = new User();
+//        json을 파싱해서, tempUser의 내용물로 채워주기.
+        try {
+            tempUser.setId(json.getInt("id"));
+            tempUser.setUserId(json.getString("user_id"));
+            tempUser.setUserName(json.getString("name"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return tempUser;
+
+    }
+
     @Override
     public void setupEvents() {
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ServerUtil.sign_in(mContext, idEdt.getText().toString(), pwEdt.getText().toString(),
+                        new ServerUtil.JsonResponseHandler() {
+                    @Override
+                    public void onResponse(JSONObject json) {
+                        try {
+                            if (json.getBoolean("result")) {
+                                User loginuser = User.getUserFromJsonObject(json.getJSONObject("user"));
+                                String loginSuccess = String.format(Locale.KOREA, "%s님이 로그인 했습니다.", loginuser.getUserName());
+                                Toast.makeText(mContext, loginSuccess, Toast.LENGTH_SHORT).show();
+                            }
 
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     @Override
