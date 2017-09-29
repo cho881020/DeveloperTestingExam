@@ -1,6 +1,7 @@
 package kr.co.tjeit.developertestingexam;
 
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,6 +60,10 @@ public class MainActivity extends BaseActivity {
                                 User loginuser = User.getUserFromJsonObject(json.getJSONObject("user"));
                                 String loginSuccess = String.format(Locale.KOREA, "%s님이 로그인 했습니다.", loginuser.getUserName());
                                 Toast.makeText(mContext, loginSuccess, Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                String loginFailed = String.format(Locale.KOREA, "로그인에 실패했습니다. 아이디와 비밀번호를 확인해 주세요.");
+                                Toast.makeText(mContext, loginFailed, Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (JSONException e) {
