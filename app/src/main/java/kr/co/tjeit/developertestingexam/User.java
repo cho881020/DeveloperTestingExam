@@ -18,20 +18,6 @@ public class User implements Serializable {
     private String userId;
     private String name;
 
-    public static User getUserFromJson(JSONObject jsonObject) {
-        User tempUser = new User();
-        try {
-            tempUser.setId(jsonObject.getInt("id"));
-            tempUser.setUserId(jsonObject.getString("user_id"));
-            tempUser.setName(jsonObject.getString("name"));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return tempUser;
-    }
-
     public User() {
 
     }

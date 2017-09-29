@@ -35,18 +35,26 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
+                if (idEdt.getText().toString().equals("")) {
+                    Toast.makeText(mContext, "아이디를 입력하세요.", Toast.LENGTH_SHORT).show();
+                }
+                if (pwEdt.getText().toString().equals("")) {
+                    Toast.makeText(mContext, "비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show();
+                }
+
                 ServerUtil.sign_in(mContext, idEdt.getText().toString(), pwEdt.getText().toString(), new ServerUtil.JsonResponseHandler() {
                     @Override
                     public void onResponse(JSONObject json) {
                         try {
                             if (json.getBoolean("result")) {
-                                User loginUser = User.getUserFromJson(json.getJSONObject("user"));
-                                ContextUtil.login(mContext, loginUser);
+                                JSONObject user = json.getJSONObject("user");
 
-                                Toast.makeText(mContext, loginUser.getUserId() + " 님이 로그인했습니다." , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, user.getString("user_id") + "님이 로그인했습니다.", Toast.LENGTH_SHORT).show();
+
+                                ContextUtil.login(mContext, new User(user.getInt("id"), user.getString("user_id"), user.getString("name")));
                             }
                             else {
-                                Toast.makeText(mContext, "아이디와 페스워드를 입력하세요.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, "로그인에 실패했습니다. 아이디와 페스워드를 입력하세요.", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

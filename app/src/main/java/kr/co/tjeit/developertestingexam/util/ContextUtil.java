@@ -16,48 +16,34 @@ import kr.co.tjeit.developertestingexam.User;
  */
 
 public class ContextUtil {
+    private static User loginUser = null;
 
-    private static final String prefName = "RestaurantPref";
+    private static final String prefName = "DeveloperTest";
 
-    private static final String USER_ID = "USER_ID"; // 디비에서 활용할 숫자 ID
-    private static final String USER_INPUT_ID = "USER_INPUT_ID"; // 로그인할때 입력하는 아이디
+    private static final String ID = "ID";
+    private static final String USER_ID = "USER_ID";
     private static final String USER_NAME = "USER_NAME";
 
-    public static void login(Context context, User user) {
-
+    public static void login(Context context, User loginUser) {
         SharedPreferences pref = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
 
-        pref.edit().putInt(USER_ID, user.getId()).apply();
-        pref.edit().putString(USER_INPUT_ID, user.getUserId()).apply();
-        pref.edit().putString(USER_NAME, user.getName()).apply();
+        pref.edit().putInt(ID, loginUser.getId()).commit();
+        pref.edit().putString(USER_ID, loginUser.getUserId()).commit();
+        pref.edit().putString(USER_NAME, loginUser.getName()).commit();
 
     }
 
-    public static void logout(Context context) {
-
+    public static User getLoginUser(Context context) {
         SharedPreferences pref = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
 
-
-        pref.edit().putInt(USER_ID, 0).apply();
-        pref.edit().putString(USER_INPUT_ID, "").apply();
-        pref.edit().putString(USER_NAME, "").apply();
-
-    }
-
-    public static User getLoginUserInfo(Context context) {
-        User loginUser = new User();
-
-        SharedPreferences pref = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
-
-
-        if (pref.getInt(USER_ID, 0) >= 1) {
-
-            loginUser.setId(pref.getInt(USER_ID, 0));
-            loginUser.setUserId(pref.getString(USER_INPUT_ID, ""));
-            loginUser.setName(pref.getString(USER_NAME, ""));
-        }
-        else {
+        if (pref.getString(USER_ID, "").equals("")) {
+//            로그인이 안된 상태
             loginUser = null;
+        } else {
+            loginUser = new User();
+            loginUser.setId(pref.getInt(ID, 0));
+            loginUser.setUserId(pref.getString(USER_ID, ""));
+            loginUser.setName(pref.getString(USER_NAME, ""));
         }
 
 
